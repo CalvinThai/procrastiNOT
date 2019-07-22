@@ -1,0 +1,19 @@
+{
+  "name": "procrastinot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "blocklist.js",
+  "scripts": {
+    "test": "mocha --timeout 10000"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cajon": "^0.4.4",
+    "chai": "^4.1.2",
+    "fullcalendar": "^3.7.0",
+    "mocha": "^4.0.1",
+    "requirejs": "^2.3.5",
+    "octicons": "^7.0.1"
+  }
+}

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script src="../js/blocklist.js"></script>
+  <script src="../js/auth.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../js/jquery_modules/jquery-3.2.1.min.js"></script>
+  <link rel="stylesheet" href="../css/bootstrap_modules/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/options.css">
+  <script src="../js/popper_modules/popper.min.js"></script>
+  <script src="../js/bootstrap_modules/bootstrap.min.js"></script>
+
+  <link rel="stylesheet" href="../node_modules/octicons/build/build.css">
+
+  <link rel='stylesheet' href='../node_modules/fullcalendar/dist/fullcalendar.css' />
+  <script src='../node_modules/moment/moment.js'></script>
+  <script src='../node_modules/fullcalendar/dist/fullcalendar.js'></script>
+  <script src='../node_modules/fullcalendar/dist/gcal.js'></script>
+  <script src="../js/options_styling.js"></script>
+  <script src="../js/options.js"></script>
+  <script src="../js/mode.js"></script>
+  <script src="../js/scheduler.js"></script>
+
+
+  <style>
+  p.addUrlErrorMsg {
+	text-align: center;
+  }
+  </style>
+
+</head>
+
+<nav class="navbar navbar-primary bg-faded">
+  <a class="navbar-brand" href="#">ProcrastiNOT</a>
+</nav>
+
+<body>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="list-group" id="myList" role="tablist">
+          <a class="list-group-item list-group-item-action active" data-toggle="list" href="#scheduler" role="tab">Scheduler</a>
+          <a class="list-group-item list-group-item-action" data-toggle="list" href="#modes" role="tab">Mode Creator</a>
+          <a class="list-group-item list-group-item-action" data-toggle="list" href="#blocklist" role="tab">Block List</a>
+          <a class="list-group-item list-group-item-action" data-toggle="list" href="#schedulerpage" role="tab">Session Manager</a>
+          <a class="list-group-item list-group-item-action" data-toggle="list" href="#modepage" role="tab">View Modes</a>
+        </div>
+      </div>
+
+      <div class="col-md-9">
+        <div class="tab-content">
+          <div class="tab-pane active" id="scheduler" role="tabpanel">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Scheduler</h4>
+                <div class="container">
+                  <div id='calendar'></div>
+                  <form id="taskForm">
+                    <div class='input-group date' id='datetimepicker1'>
+                        <input type='text' class="form-control" />
+                        <span class="input-group-addon">
+                            <!--<span class="octicon octicon-clippy"></span> Calendar-->
+                            <img class="calendar-svg" src="../node_modules/octicons/build/svg/calendar.svg"></img>
+                        </span>
+                    </div>
+                  </div>
+                  <hr />
+                    <button class="btn btn-primary" type="submit" id="addTask">Add New Date</button>
+                  	<button class="btn btn-primary" type="submit">Submit Times </button>
+                  </form>
+              </div>
+            </div>
+          </div>
+
+            <div class="tab-pane" id="modes" role="tabpanel">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Mode Creator</h4>
+                  <p class="lead">1. Enter the name of your mode:</p>
+                  <div class="row form-group">
+                    <div class="col-md-9">
+                      <input type='text' class="form-control" id="addMode" placeholder="Mode Name"/>
+                    </div>
+                  </div>
+                  <p class="lead">2. Select URL(s) to handle (select multiple with <kbd>ctrl</kbd> or <kbd>cmnd</kbd>):</p>
+                  <div class"col-md-9 form-group">
+                    <form>
+                      <select id="url-select" class="form-control" multiple>
+
+                      </select>
+                    </form>
+                  </div>
+                <hr />
+                  <p class="lead">3. Select options:</p>
+                  <div class"col-md-9">
+                    <select id = "modeType">
+                      <option>Block</option>
+                      <option>Redirect</option>
+                      <option>Whitelist</option>                      
+                    </select>
+                     <br>
+                    <p>Enter URL to redirect to if applicable:</p>
+                    <div class="row form-group">
+                      <div class="col-md-9">
+                        <input type='text' class="form-control" id="moderedirctURL" placeholder="Redirect URL"/>
+                      </div>
+                    </div>
+                  </div>
+                    <button id="createMode" class="btn btn-primary" type="submit"/>Create Mode</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-pane" id="blocklist" role="tabpanel">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Block List</h4>
+                    <br>
+                    <div class="row form-group">
+                      <div class="col-md-10">
+                        <input style="width: 100%; height: 100%;" type="text" id="addSiteInputUrl" placeholder="Submit URL"/>
+                      </div>
+                      <div class="col-md-2">
+                        <button id="addURL" class="btn btn-primary" type="submit"/>Submit</button>
+                      </div>
+                    </div>
+					<div>
+					  <p class="addUrlErrorMsg" id="addUrlError"></p>
+					</div>
+                    <div id= "checklist">
+                    </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="tab-pane" id="schedulerpage" role="tabpanel">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Manage Sessions</h4>
+                  <p class="card-text">Scheduled Sessions</p>
+                  <div id="scheduledsession"></div>
+                  <p class="card-text">Active Sessions</p>
+                  <div id="activesession"></div>
+                </br>
+                <p>Pick your mode</p>
+                <select class="form-control" id = "pickmode">
+                    <option>---</option>                   
+                </select>
+                <hr />
+                <div class="col-md-10">
+                  <label for"addStartTime">Start Time </label>
+                  <input class="form-control" style="width: 100%; height: 100%;" type="datetime-local" id="addStartTime"/>
+                  <label for"addEndTime">End Time </label>
+                  <input class="form-control" style="width: 100%; height: 100%;" type="datetime-local" id="addEndTime"/>
+                </div>
+                <br />
+                <button type="button" class="btn btn-primary" id="addsessions">Add input session</button>
+                <button type="button" class="btn btn-primary" id="rmsessions">Clear all sessions</button>
+                </div>
+              </div>
+            </div>
+
+
+              <div class="tab-pane" id="modepage" role="tabpanel">
+                  <div class="card">
+                    <div class="card-body">
+                      <h4 class="card-title">Current Modes</h4>
+                      <div id="currentmodes"></div>
+
+                    </div>
+                </div>
+            </div>
+
+          
+        </div>
+    </div>
+  </div>
+
+</body>
+</html>
